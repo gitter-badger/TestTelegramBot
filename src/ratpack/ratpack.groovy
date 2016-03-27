@@ -5,7 +5,7 @@ import static ratpack.groovy.Groovy.ratpack
 
 ratpack {
     serverConfig {
-        ssl SSLContexts.sslContext(getClass().getResourceAsStream("/maapbot.jks"), "changeit")
+        ssl SSLContexts.sslContext(this.class.getResource("/maapbot.jks"), "changeit")
     }
     handlers {
         all RequestLogger.ncsa()
