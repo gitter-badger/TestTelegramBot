@@ -1,17 +1,10 @@
-import com.fasterxml.jackson.annotation.JsonAutoDetect
-import com.fasterxml.jackson.annotation.PropertyAccessor
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.pengrad.telegrambot.TelegramBot
 import com.pengrad.telegrambot.TelegramBotAdapter
-import com.pengrad.telegrambot.model.Update
 import org.slf4j.LoggerFactory
 import ratpack.handling.RequestLogger
-import ratpack.ssl.SSLContexts
-import static ratpack.util.Types.listOf;
-import static ratpack.jackson.Jackson.jsonNode
-import static ratpack.jackson.Jackson.fromJson
 
 import static ratpack.groovy.Groovy.ratpack
+import static ratpack.jackson.Jackson.jsonNode
 
 def logger = LoggerFactory.getLogger("ua.eshepelyuk")
 
@@ -24,6 +17,7 @@ ratpack {
 
     handlers {
         all RequestLogger.ncsa()
+
         post("webhook") {TelegramBot telegramBot ->
             logger.info("webhook called length=${request.contentLength}, type=${request.contentType}")
 
@@ -37,9 +31,6 @@ ratpack {
                     )
                     response.send("OK")
                 }
-        }
-        get(":name") {
-            render "$pathTokens.name"
         }
     }
 }
