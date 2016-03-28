@@ -14,13 +14,19 @@ ratpack {
         all RequestLogger.ncsa()
         post("webhook") {
             logger.info("webhook called")
-            context.parse(listOf(Update))
-                .onError {
-                    logger.error("webhook exception", it)
-                } then {
-                    logger.info("webhook parsed $it")
-                    //updates.each { logger.info("webhook update=$it") }
-                }
+
+            request.getBody()
+            .onError { logger.error("webhook exception", it) }
+            .then {
+                logger.info("webhook request ${it.text}")
+            }
+//            context.parse(listOf(Update))
+//                .onError {
+//                    logger.error("webhook exception", it)
+//                } then {
+//                    logger.info("webhook parsed $it")
+//                    updates.each { logger.info("webhook update=$it") }
+//                }
 
             render "OK"
         }
