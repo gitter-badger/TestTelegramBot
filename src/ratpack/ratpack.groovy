@@ -17,7 +17,7 @@ ratpack {
             context.parse(listOf(Update))
                 .onError {
                     logger.error("webhook exception", it)
-                } then { List updates -> updates.each { logger.info("webhook update=$it") } }s
+                } then { List updates -> updates.each { logger.info("webhook update=$it") } }
 
             logger.info("webhook ok")
             render "OK"
