@@ -13,14 +13,14 @@ ratpack {
     handlers {
         all RequestLogger.ncsa()
         post("webhook") {
-            logger.info("webhook called")
+            logger.info("webhook called length=${request.contentLength}, type=${request.contentType}")
 
 //            request.getBody()
 //            .onError { logger.error("webhook exception", it) }
 //            .then {
 //                logger.info("webhook request ${it.text}")
 //            }
-            
+
             context.parse(fromJson(Update))
                 .onError {
                     logger.error("webhook exception", it)
