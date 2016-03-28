@@ -31,7 +31,7 @@ ratpack {
                     logger.error("webhook exception", it)
                     response.send("KO")
                 } then {
-                    logger.info("webhook parsed $it")
+                    logger.info("webhook parsed message=${it.get('message').get('text')}")
                     response.send("OK")
                 }
         }
