@@ -9,6 +9,12 @@ ratpack {
 //    }
     handlers {
         all RequestLogger.ncsa()
+        get("webhook") {
+            render "GET webhook"
+        }
+        post("webhook") {
+            render "POST webhook"
+        }
         get(":name") {
             render "$pathTokens.name"
         }
