@@ -17,7 +17,11 @@ ratpack {
         all RequestLogger.ncsa()
         post("webhook") {
             logger.info("webhook called")
-            context.parse(listOf(Update))
+            try {
+                context.parse(listOf(Update))
+            } catch (Exception e) {
+                logger.error("error parsing", e)
+            }
             render "POST webhook 2"
         }
         get(":name") {
