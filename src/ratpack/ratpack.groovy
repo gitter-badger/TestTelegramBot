@@ -37,7 +37,7 @@ ratpack {
 
                 try {
                     botan.track(it.get('message').get('from').asLong(), "message", it.get('message'));
-                } catch (IOException e) {
+                } catch (Exception e) {
                     logger.error("Cannot track message to Botan", e)
                 }
 
