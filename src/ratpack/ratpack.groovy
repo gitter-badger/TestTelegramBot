@@ -1,12 +1,17 @@
 import com.pengrad.telegrambot.TelegramBot
 import com.pengrad.telegrambot.TelegramBotAdapter
+import com.pengrad.telegrambot.model.Message
 import org.slf4j.LoggerFactory
 import ratpack.handling.RequestLogger
 
 import static ratpack.groovy.Groovy.ratpack
 import static ratpack.jackson.Jackson.jsonNode
 
+import me.shib.java.lib.botan.Botan
+
 def logger = LoggerFactory.getLogger("ua.eshepelyuk")
+def botanToken = "eLCwUk8FyyShxL88OJ2RS-Q1YXgD_eHQ";
+def Botan botan = new Botan(botanToken);
 
 ratpack {
 
@@ -26,10 +31,17 @@ ratpack {
                     logger.error("webhook exception", it)
                     response.status(500).send(it.message)
                 } then {
-                    logger.info("webhook message=${it.get('message').get('text').asText()} from=${it.get('message').get('from')}")
+                    Message message = it.get('message') as Message;
+                    logger.info("webhook message=${message.get('text').asText()} from=${message.get('from')}")
                     telegramBot.sendMessage(
-                        it.get('message').get('chat').get('id').asLong(), "You've just said ${it.get('message').get('text').asText()}"
+                        message.get('chat').get('id').asLong(), "You've just said ${message.get('text').asText()}"
                     )
+
+                    try {
+                        botan.track(message.get('from'), "message", message);
+                    } catch (IOException e) {
+                        logger.error("Cannot track message to Botan", e)
+                    }
                     response.send("OK")
                 }
         }
