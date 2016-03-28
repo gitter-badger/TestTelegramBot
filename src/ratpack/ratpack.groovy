@@ -23,28 +23,26 @@ ratpack {
     handlers {
         all RequestLogger.ncsa()
 
-        post("webhook") {TelegramBot telegramBot ->
+        post("webhook") { TelegramBot telegramBot ->
             logger.info("webhook called length=${request.contentLength}, type=${request.contentType}")
 
             context.parse(jsonNode())
-                .onError {
-                    logger.error("webhook exception", it)
-                    response.status(500).send(it.message)
-                } then {
-                    logger.info("webhook update=${it}")
-                    Message message = it.get('message') as Message;
-                    logger.info("webhook message=${message.get('text').asText()} from=${message.get('from')}")
-                    telegramBot.sendMessage(
-                        message.get('chat').get('id').asLong(), "You've just said ${message.get('text').asText()}"
-                    )
+                    .onError {
+                logger.error("webhook exception", it)
+                response.status(500).send(it.message)
+            } then {
+                logger.info("webhook update=${it}")
+                telegramBot.sendMessage(it.get('message').get('chat').get('id').asLong(), "You've just said ${it.get('message').get('text').asText()}"
+                )
 
-                    try {
-                        botan.track(message.get('from'), "message", message);
-                    } catch (IOException e) {
-                        logger.error("Cannot track message to Botan", e)
-                    }
-                    response.send("OK")
+                try {
+                    botan.track(it.get('message').get('from').asLong(), "message", it.get('message'));
+                } catch (IOException e) {
+                    logger.error("Cannot track message to Botan", e)
                 }
+
+                response.send("OK")
+            }
         }
     }
 }
