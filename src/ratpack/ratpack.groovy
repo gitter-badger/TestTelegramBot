@@ -15,18 +15,18 @@ ratpack {
         post("webhook") {
             logger.info("webhook called")
 
-            request.getBody()
-            .onError { logger.error("webhook exception", it) }
-            .then {
-                logger.info("webhook request ${it.text}")
-            }
-//            context.parse(listOf(Update))
-//                .onError {
-//                    logger.error("webhook exception", it)
-//                } then {
-//                    logger.info("webhook parsed $it")
-//                    updates.each { logger.info("webhook update=$it") }
-//                }
+//            request.getBody()
+//            .onError { logger.error("webhook exception", it) }
+//            .then {
+//                logger.info("webhook request ${it.text}")
+//            }
+            
+            context.parse(fromJson(Update))
+                .onError {
+                    logger.error("webhook exception", it)
+                } then {
+                    logger.info("webhook parsed $it")
+                }
 
             render "OK"
         }
