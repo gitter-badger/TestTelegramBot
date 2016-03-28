@@ -1,4 +1,5 @@
 import com.pengrad.telegrambot.model.Update
+import org.slf4j.LoggerFactory
 import ratpack.handling.RequestLogger
 import ratpack.ssl.SSLContexts
 import static ratpack.util.Types.listOf;
@@ -7,6 +8,8 @@ import static ratpack.jackson.Jackson.fromJson
 
 import static ratpack.groovy.Groovy.ratpack
 
+def logger = LoggerFactory.getLogger(MyTelegramBot)
+
 ratpack {
 //    serverConfig {
 //        ssl SSLContexts.sslContext(this.class.getResource("/maapbot.jks"), "changeit")
@@ -14,7 +17,7 @@ ratpack {
     handlers {
         all RequestLogger.ncsa()
         post("webhook") {
-            println "webhook ${request.getContentType()}"
+            logger.info("webhook ${request.getContentType()}")
             context.parse(listOf(Update))
             render "POST webhook 2"
         }
