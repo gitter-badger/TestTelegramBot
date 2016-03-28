@@ -8,8 +8,7 @@ import static ratpack.jackson.Jackson.fromJson
 
 import static ratpack.groovy.Groovy.ratpack
 
-def logger = LoggerFactory.getLogger(MyTelegramBot)
-
+def logger = LoggerFactory.getLogger("ua.eshepelyuk")
 ratpack {
 //    serverConfig {
 //        ssl SSLContexts.sslContext(this.class.getResource("/maapbot.jks"), "changeit")
@@ -17,7 +16,7 @@ ratpack {
     handlers {
         all RequestLogger.ncsa()
         post("webhook") {
-            logger.info("webhook ${request.getContentType()}")
+            logger.info("webhook called")
             context.parse(listOf(Update))
             render "POST webhook 2"
         }
