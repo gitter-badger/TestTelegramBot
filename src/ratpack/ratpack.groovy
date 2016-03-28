@@ -15,20 +15,14 @@ ratpack {
         post("webhook") {
             logger.info("webhook called length=${request.contentLength}, type=${request.contentType}")
 
-//            request.getBody()
-//            .onError { logger.error("webhook exception", it) }
-//            .then {
-//                logger.info("webhook request ${it.text}")
-//            }
-
             context.parse(fromJson(Update))
                 .onError {
                     logger.error("webhook exception", it)
+                    response.send("KO")
                 } then {
                     logger.info("webhook parsed $it")
+                    response.send("KO")
                 }
-
-            render "OK"
         }
         get(":name") {
             render "$pathTokens.name"
