@@ -10,9 +10,6 @@ import static ratpack.groovy.Groovy.ratpack
 
 def logger = LoggerFactory.getLogger("ua.eshepelyuk")
 ratpack {
-//    serverConfig {
-//        ssl SSLContexts.sslContext(this.class.getResource("/maapbot.jks"), "changeit")
-//    }
     handlers {
         all RequestLogger.ncsa()
         post("webhook") {
