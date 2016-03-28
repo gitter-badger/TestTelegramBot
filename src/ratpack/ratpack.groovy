@@ -13,7 +13,11 @@ ratpack {
             render "GET webhook"
         }
         post("webhook") {
-            render "POST webhook"
+            byContent {
+                json {
+                    render "POST webhook 2"
+                }
+            }
         }
         get(":name") {
             render "$pathTokens.name"
