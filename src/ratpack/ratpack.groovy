@@ -35,7 +35,9 @@ ratpack {
                 telegramBot.sendMessage(message.get('chat').get('id').asLong(), "You've just said ${message.get('text').asText()}")
 
                 try {
-                    botan.track(message.get('from').asLong(), "message", message)
+                    def botanResponse = botan.track(message.get('from').asLong(), "message", message)
+                    logger.info("botan response isAccepted=${botanResponse.accepted}, info=${botanResponse.info}, status=${botanResponse.status}")
+                    botanResponse.toString()
                 } catch (Exception e) {
                     logger.error("Cannot track message to Botan", e)
                 }
