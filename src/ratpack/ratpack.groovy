@@ -9,6 +9,7 @@ import static ratpack.jackson.Jackson.fromJson
 import static ratpack.groovy.Groovy.ratpack
 
 def logger = LoggerFactory.getLogger("ua.eshepelyuk")
+
 ratpack {
     handlers {
         all RequestLogger.ncsa()
@@ -16,12 +17,14 @@ ratpack {
             logger.info("webhook called length=${request.contentLength}, type=${request.contentType}")
 
             context.parse(fromJson(Update))
+
+            request.getBody()
                 .onError {
                     logger.error("webhook exception", it)
                     response.send("KO")
                 } then {
-                    logger.info("webhook parsed $it")
-                    response.send("KO")
+                    logger.info("webhook parsed $it.text")
+                    response.send("OK")
                 }
         }
         get(":name") {
