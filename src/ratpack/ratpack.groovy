@@ -18,11 +18,13 @@ ratpack {
         post("webhook") {
             logger.info("webhook called")
             try {
-                context.parse(listOf(Update))
+                def updates = context.parse(listOf(Update))
+                logger.info("updates $updates")
             } catch (Exception e) {
                 logger.error("error parsing", e)
             }
-            render "POST webhook 2"
+            logger.info("webhook ok")
+            render "OK"
         }
         get(":name") {
             render "$pathTokens.name"
