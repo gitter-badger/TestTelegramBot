@@ -35,7 +35,7 @@ ratpack {
                 telegramBot.sendMessage(
                     message['chat']['id'] as Long, "You've just said *${message['text']}*",
                     ParseMode.Markdown, false, null,
-                    new ReplyKeyboardMarkup([message['text'], "Cool", "It sucks"] as String[])
+                    new ReplyKeyboardMarkup([message['text'].toString(), "Cool", "It sucks"] as String[])
                 )
 
                 try {
