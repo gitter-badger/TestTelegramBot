@@ -26,6 +26,7 @@ ratpack {
                     logger.error("webhook exception", it)
                     response.status(500).send(it.message)
                 } then {
+                    logger.info("webhook message=${it.get('message').get('text').asText()} from=${it.get('message').get('from')}")
                     telegramBot.sendMessage(
                         it.get('message').get('chat').get('id').asLong(), "You've just said ${it.get('message').get('text').asText()}"
                     )
