@@ -3,6 +3,7 @@ import com.pengrad.telegrambot.TelegramBotAdapter
 import com.pengrad.telegrambot.model.request.ParseMode
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup
 import me.shib.java.lib.botan.Botan
+import me.shib.java.lib.common.utils.JsonLib
 import org.slf4j.LoggerFactory
 import ratpack.handling.RequestLogger
 
@@ -18,12 +19,15 @@ ratpack {
 
         Botan botan = new Botan("GJ0FStZer9Xn9LRV4DehINImeyEhCWMy")
         bindInstance(botan)
+
+        def jsonLib = new JsonLib()
+        bindInstance(jsonLib)
     }
 
     handlers {
         all RequestLogger.ncsa()
 
-        post("webhook") { TelegramBot telegramBot, Botan botan ->
+        post("webhook") { TelegramBot telegramBot, Botan botan, JsonLib jsonLib ->
             context.parse(Map) onError {
                 logger.error("exception", it)
                 response.status(500).send(it.message)
@@ -38,6 +42,7 @@ ratpack {
                 )
 
                 try {
+                    logger.info("encoded json for botan: ${jsonLib.toJson(it)}")
                     def botanResp = botan.track(message['from']['id'] as Long, "message", it)
                     logger.info("botan response isAccepted=${botanResp.accepted}, info=${botanResp.info}, status=${botanResp.status}")
                 } catch (Exception e) {
