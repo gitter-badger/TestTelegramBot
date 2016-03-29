@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory
 import ratpack.handling.RequestLogger
 
 import static ratpack.groovy.Groovy.ratpack
-import static ratpack.jackson.Jackson.jsonNode
 
 def logger = LoggerFactory.getLogger("ua.eshepelyuk")
 
@@ -17,7 +16,7 @@ ratpack {
         TelegramBot bot = TelegramBotAdapter.build("205365091:AAHhR6iyhWwK9pdv0FEvrKiyng0yHeI4avc")
         bindInstance TelegramBot, bot
 
-        Botan botan = new Botan("AvVoNrWQ5PQgC-FxDCeoXf_ytf7m3_mJ")
+        Botan botan = new Botan("GJ0FStZer9Xn9LRV4DehINImeyEhCWMy")
         bindInstance(botan)
     }
 
@@ -25,7 +24,9 @@ ratpack {
         all RequestLogger.ncsa()
 
         post("webhook") { TelegramBot telegramBot, Botan botan ->
-            context.parse(Map) onError {
+            context.parse(Map) onYield {
+                logger.info("update=$it")
+            } onError {
                 logger.error("exception", it)
                 response.status(500).send(it.message)
             } then {
