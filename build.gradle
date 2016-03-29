@@ -22,6 +22,8 @@ dependencies {
 
     compile "me.shib.java.lib:botan:1.0"
 
+    compile "com.likethecolor:alchemy:1.2.0"
+
     // We use the awesome Spock testing and specification framework
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'junit:junit:4.12'
