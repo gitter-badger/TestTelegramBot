@@ -24,9 +24,7 @@ ratpack {
         all RequestLogger.ncsa()
 
         post("webhook") { TelegramBot telegramBot, Botan botan ->
-            context.parse(Map) onYield {
-                logger.info("update=$it")
-            } onError {
+            context.parse(Map) onError {
                 logger.error("exception", it)
                 response.status(500).send(it.message)
             } then {
