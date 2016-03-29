@@ -33,7 +33,6 @@ System.out.println("Status: " + sentimentResponse.getStatus());
 System.out.println("Status Info: " + sentimentResponse.getStatusInfo());
 System.out.println("Text: " + sentimentResponse.getText());
 System.out.println("Usage: " + sentimentResponse.getUsage());
-System.out.println("URL: " + sentimentResponse.getURL());
 
 SentimentAlchemyEntity entity;
 final Iterator<SentimentAlchemyEntity> iter = sentimentResponse.iterator();
