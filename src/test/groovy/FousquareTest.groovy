@@ -14,6 +14,8 @@ FoursquareApi foursquareApi = new FoursquareApi(
 
 def request = ['ll':'50.50,30.50','near':'Оболонь','section':'food','query':'мясо']
 
+//https://developer.foursquare.com/docs/
+//Categories:
 //One of food, drinks, coffee, shops, arts, outdoors, sights, trending or specials,
 //nextVenues (venues frequently visited after a given venue),
 //or topPicks (a mix of recommendations generated without a query from the user). Choosing one
