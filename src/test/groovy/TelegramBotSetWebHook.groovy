@@ -1,11 +1,9 @@
 import com.pengrad.telegrambot.TelegramBot
 import com.pengrad.telegrambot.TelegramBotAdapter
-import com.pengrad.telegrambot.model.Chat
-import com.pengrad.telegrambot.model.Update
-import com.pengrad.telegrambot.model.request.ParseMode
-import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup
+import org.yaml.snakeyaml.Yaml
 
-TelegramBot bot = TelegramBotAdapter.buildDebug("205365091:AAHhR6iyhWwK9pdv0FEvrKiyng0yHeI4avc")
+def yaml = new Yaml().load(MaapBotConfig.getResourceAsStream("/maapbot.yaml"))
+TelegramBot bot = TelegramBotAdapter.buildDebug(yaml.maapbot.telegramToken)
 bot.setWebhook("https://maapbot.herokuapp.com/webhook")
 
 

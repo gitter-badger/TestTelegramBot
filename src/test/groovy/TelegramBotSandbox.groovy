@@ -4,8 +4,12 @@ import com.pengrad.telegrambot.model.Chat
 import com.pengrad.telegrambot.model.Update
 import com.pengrad.telegrambot.model.request.ParseMode
 import com.pengrad.telegrambot.model.request.ReplyKeyboardMarkup
+import org.yaml.snakeyaml.Yaml
 
-TelegramBot bot = TelegramBotAdapter.build("205365091:AAHhR6iyhWwK9pdv0FEvrKiyng0yHeI4avc")
+def yaml = new Yaml().load(MaapBotConfig.getResourceAsStream("/maapbot.yaml"))
+
+TelegramBot bot = TelegramBotAdapter.build(yaml.maapbot.telegramToken)
+
 def resp = bot.getUpdates(0, 10, 100)
 
 

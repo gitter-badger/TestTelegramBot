@@ -1,12 +1,14 @@
+import com.google.common.io.Resources
 import com.likethecolor.alchemy.api.Client
 import com.likethecolor.alchemy.api.call.AbstractCall
 import com.likethecolor.alchemy.api.call.SentimentCall
 import com.likethecolor.alchemy.api.call.type.CallTypeText
 import com.likethecolor.alchemy.api.entity.Response
 import com.likethecolor.alchemy.api.entity.SentimentAlchemyEntity
+import org.yaml.snakeyaml.Yaml
 
-def apiKey = "e0614aa30fa5382fcead9e124974bb26941a6b7b"
-def Client client = new Client(apiKey)
+def yaml = new Yaml().load(MaapBotConfig.getResourceAsStream("/maapbot.yaml"))
+def Client client = new Client(yaml.maapbot.alchemyToken)
 
 final AbstractCall<SentimentAlchemyEntity> sentimentCall = new SentimentCall(
     new CallTypeText("Были вдвоем, ужинали по поводу. Цена и качество-вещи не совместимые. " +
