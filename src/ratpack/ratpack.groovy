@@ -1,3 +1,4 @@
+import com.google.common.io.Resources
 import com.pengrad.telegrambot.TelegramBot
 import com.pengrad.telegrambot.TelegramBotAdapter
 import com.pengrad.telegrambot.model.request.ParseMode
@@ -7,26 +8,32 @@ import me.shib.java.lib.common.utils.JsonLib
 import org.slf4j.LoggerFactory
 import ratpack.handling.RequestLogger
 
+import static ratpack.func.Action.throwException
 import static ratpack.groovy.Groovy.ratpack
 
 def logger = LoggerFactory.getLogger("ua.eshepelyuk")
 
 ratpack {
+    serverConfig {
+        onError(throwException()).yaml(Resources.getResource("maapbot.yaml")).require("/maapbot", MaapBotConfig)
+    }
 
     bindings {
-        TelegramBot bot = TelegramBotAdapter.build("205365091:AAHhR6iyhWwK9pdv0FEvrKiyng0yHeI4avc")
-        bindInstance TelegramBot, bot
+        def maapBotConfig = serverConfig.get("/maapbot", MaapBotConfig)
+        bindInstance(maapBotConfig)
 
-        Botan botan = new Botan("GJ0FStZer9Xn9LRV4DehINImeyEhCWMy")
-        bindInstance(botan)
+        bindInstance(TelegramBotAdapter.build(maapBotConfig.telegramToken))
 
-        def jsonLib = new JsonLib()
-        bindInstance(jsonLib)
+        bindInstance(new Botan(maapBotConfig.botanToken))
+
+        bindInstance(new JsonLib())
     }
 
     handlers {
         all RequestLogger.ncsa()
-
+        get("config") {MaapBotConfig config ->
+            render config.toString()
+        }
         post("webhook") { TelegramBot telegramBot, Botan botan, JsonLib jsonLib ->
             context.parse(Map) onError {
                 logger.error("exception", it)
