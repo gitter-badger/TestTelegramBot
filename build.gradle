@@ -26,6 +26,8 @@ dependencies {
 
     compile "me.atlis:foursquare-api:1.0.6"
 
+    compile 'com.yandex.android:speechkit:2.5.0:jar'
+
     // We use the awesome Spock testing and specification framework
     testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
     testCompile 'junit:junit:4.12'
