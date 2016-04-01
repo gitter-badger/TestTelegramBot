@@ -11,4 +11,8 @@ class MaapBotConfig {
     String botanToken
 
     String alchemyToken
+
+    String foursquareClientId
+
+    String foursquareClientSecret
 }
